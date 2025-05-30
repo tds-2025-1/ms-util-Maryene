@@ -1,0 +1,92 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.4'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id 'jacoco'
+}
+
+group = 'br.edu.ifrs.riogrande.tads.tds'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// para usar o banco: ------------------------------------
+	// implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// runtimeOnly 'org.postgresql:postgresql'
+	// -------------------------------------------------------
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	compileOnly 'org.projectlombok:lombok'
+  annotationProcessor 'org.projectlombok:lombok'
+	
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'	
+	implementation 'com.github.f4b6a3:uuid-creator:6.1.0'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// código Groovy
+jacocoTestCoverageVerification {
+
+	violationRules {
+		rule {
+			element = 'CLASS'
+
+			limit {
+				counter = 'LINE'
+				minimum = 0.70
+			}
+
+			excludes = [
+				'br.edu.ifrs.riogrande.tads.tds.util.controller.dto.*',
+				'br.edu.ifrs.riogrande.tads.tds.util.App',
+				'br.edu.ifrs.riogrande.tads.tds.util.service.TimeElapsedCalculatorService',
+				'br.edu.ifrs.riogrande.tads.tds.util.service.CepService',
+				'br.edu.ifrs.riogrande.tads.tds.util.service.DateCalculatorService',
+				'br.edu.ifrs.riogrande.tads.tds.util.controller.SemanasController',
+//				'br.edu.ifrs.riogrande.tads.tds.util.service.CpfService',
+//				'br.edu.ifrs.riogrande.tads.tds.util.service.PingService',
+//				'br.edu.ifrs.riogrande.tads.tds.util.service.SenhaService',
+//				'br.edu.ifrs.riogrande.tads.tds.util.service.IpService',
+
+				'br.edu.ifrs.riogrande.tads.tds.util.service.nomeValidoService',
+				'br.edu.ifrs.riogrande.tads.tds.util.service.BusinessDayCalculatorService',
+				'br.edu.ifrs.riogrande.tads.tds.util.service.SenhaService.Forca',
+				'br.edu.ifrs.riogrande.tads.tds.util.service.UuidService',
+				'br.edu.ifrs.riogrande.tads.tds.util.controller.TimeElapsedController',
+				'br.edu.ifrs.riogrande.tads.tds.util.controller.CepController',
+//				'br.edu.ifrs.riogrande.tads.tds.util.controller.CpfController',
+				'br.edu.ifrs.riogrande.tads.tds.util.controller.nomeValidoController',
+				'br.edu.ifrs.riogrande.tads.tds.util.controller.BusinessDayController',
+//				'br.edu.ifrs.riogrande.tads.tds.util.controller.ForcaSenhaController',
+//				'br.edu.ifrs.riogrande.tads.tds.util.controller.PingController',
+//				'br.edu.ifrs.riogrande.tads.tds.util.controller.IpController',
+
+				'br.edu.ifrs.riogrande.tads.tds.util.controller.UuidController',
+				'br.edu.ifrs.riogrande.tads.tds.util.controller.ColorController',
+				'br.edu.ifrs.riogrande.tads.tds.util.config.*',
+				'br.edu.ifrs.riogrande.tads.tds.util.repository.*',
+				'br.edu.ifrs.riogrande.tads.tds.util.entity.*',
+				'br.edu.ifrs.riogrande.tads.tds.util.service.GeradorSenhaService',
+				'br.edu.ifrs.riogrande.tads.tds.util.dto.SenhaConfig',
+				'br.edu.ifrs.riogrande.tads.tds.util.dto.SenhaResponseDTO',
+				'br.edu.ifrs.riogrande.tads.tds.util.controller.GeradorSenhaController',
+			]
+		}
+	}
+}
+
+check.dependsOn jacocoTestReport
+check.dependsOn jacocoTestCoverageVerification
